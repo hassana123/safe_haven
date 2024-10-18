@@ -53,7 +53,7 @@ const LoginPage = () => {
       }
 
       // Sign in anonymously and navigate to the home page
-      await signInAnonymously(auth);
+     // await signInAnonymously(auth);
       console.log("Logged in with username:", username);
       setLoading(false);
       navigate("/home");
