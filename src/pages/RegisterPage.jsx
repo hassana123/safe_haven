@@ -44,6 +44,9 @@ const RegisterPage = () => {
     if (!validateForm()) return;
 
     try {
+      // 2. Sign in anonymously
+      const userCredential = await signInAnonymously(auth);
+      const user = userCredential.user;
       // 1. Check if the username already exists in the database
       const usernameTaken = await checkUsernameExists(username);
       if (usernameTaken) {
@@ -51,11 +54,6 @@ const RegisterPage = () => {
         setLoading(false); 
         return;
       }
-
-      // 2. Sign in anonymously
-      const userCredential = await signInAnonymously(auth);
-      const user = userCredential.user;
-
       // 3. Update the user's profile with the username
       await updateProfile(user, {
         displayName: username, // Use displayName for the username
