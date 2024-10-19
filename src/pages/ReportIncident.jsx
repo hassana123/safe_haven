@@ -23,7 +23,7 @@ const ReportIncident = () => {
       <Navbar/>
 
       {/* Main Content */}
-      <div className="flex-1 px-4 py-6 mt-10">
+      <div className="flex-1 px-4 py-5 mt-10">
         <div className="flex items-center mb-6">
           <button onClick={() => navigate(-1)} className="mr-4">
             <ArrowLeft className="h-6 w-6 text-custom-blue" />
@@ -46,7 +46,7 @@ const ReportIncident = () => {
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder="Enter location"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom-blue focus:border-custom-blue"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom-blue focus:border-custom-blue bg-white"
               required
             />
           </div>
@@ -60,7 +60,7 @@ const ReportIncident = () => {
               id="dateTime"
               value={dateTime}
               onChange={(e) => setDateTime(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom-blue focus:border-custom-blue"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom-blue focus:border-custom-blue bg-white"
               required
             />
           </div>
@@ -75,7 +75,7 @@ const ReportIncident = () => {
               onChange={(e) => setDetails(e.target.value)}
               placeholder="Write in details what happened..."
               rows="6"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom-blue focus:border-custom-blue"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom-blue focus:border-custom-blue bg-white"
               required
             ></textarea>
           </div>
