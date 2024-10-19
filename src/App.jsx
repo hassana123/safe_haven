@@ -8,27 +8,16 @@ function App({router}) {
   const [showSplash, setShowSplash] = useState(true);
   const [user, setUser] = useState(null); // To store the logged-in user
 
-  useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in, you can refresh the token here if needed
-      user.getIdToken(true).then((token) => {
-        // Token refreshed
-      });
-    } else {
-      // User is signed out or token has expired, handle this case (re-authenticate)
-      signInAnonymously(auth);
-    }
-  });
 
-  return () => unsubscribe(); // Clean up the listener when the component unmounts
-}, []);
 
   useEffect(() => {
     // Set up an auth state listener
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user); // User is logged in
+         user.getIdToken(true).then((token) => {
+        // Token refreshed
+      });
       } else {
         setUser(null); // User is logged out
       }
