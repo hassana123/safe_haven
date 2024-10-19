@@ -67,7 +67,7 @@ const LoginPage = () => {
 
 
   return (
-    <div className="flex flex-col mt-20 min-h-screen bg-white justify-center">
+    <div className="flex flex-col py-5 mt-10 min-h-screen bg-white justify-center">
       <div className="flex-1 flex flex-col px-6 pt-8 pb-12">
         <div className="flex items-center justify-center mb-8">
           <img
@@ -101,7 +101,7 @@ const LoginPage = () => {
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-transparent transition duration-200"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-transparent transition duration-200 bg-white"
               placeholder="Enter anonymous username"
             />
           </div>
@@ -119,7 +119,7 @@ const LoginPage = () => {
               value={passcode}
               onChange={(e) => setPasscode(e.target.value)}
               maxLength={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-transparent transition duration-200"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:border-transparent transition duration-200 bg-white"
               placeholder="Enter your 4-digit passcode"
             />
           </div>
