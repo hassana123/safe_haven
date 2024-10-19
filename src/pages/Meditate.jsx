@@ -51,7 +51,7 @@ const Meditate = () => {
       <Navbar />
       
       {/* Main Content */}
-      <div className="flex-1 mt-10 px-4 py-6">
+      <div className="flex-1 mt-10 px-4 py-5">
         <div className="items-center mb-6">
           <button onClick={() => navigate(-1)} className="mr-4">
             <ArrowLeft className="h-6 w-6 text-gray-600" />
