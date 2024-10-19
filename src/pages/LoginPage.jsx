@@ -34,6 +34,7 @@ const LoginPage = () => {
     }
 
     try {
+      await signInAnonymously(auth);
       // Retrieve the Firestore document for this username
       const querySnapshot = await getDoc(doc(db, 'users', username));
 
@@ -53,7 +54,7 @@ const LoginPage = () => {
       }
 
       // Sign in anonymously and navigate to the home page
-     // await signInAnonymously(auth);
+     
       console.log("Logged in with username:", username);
       setLoading(false);
       navigate("/home");
