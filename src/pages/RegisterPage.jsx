@@ -110,7 +110,7 @@ const RegisterPage = () => {
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-custom-blue focus:border-custom-blue"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-custom-blue focus:border-custom-blue bg-white"
               placeholder="This can be anything, no email or phone number required"
             />
           </div>
@@ -125,7 +125,7 @@ const RegisterPage = () => {
               value={passcode}
               onChange={(e) => setPasscode(e.target.value)}
               maxLength={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-custom-blue focus:border-custom-blue"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-custom-blue focus:border-custom-blue bg-white"
               placeholder="Enter your 4-digit passcode"
             />
           </div>
@@ -140,7 +140,7 @@ const RegisterPage = () => {
               value={confirmPasscode}
               onChange={(e) => setConfirmPasscode(e.target.value)}
               maxLength={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-custom-blue focus:border-custom-blue"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-custom-blue focus:border-custom-blue bg-white"
               placeholder="Confirm your 4-digit passcode"
             />
           </div>
