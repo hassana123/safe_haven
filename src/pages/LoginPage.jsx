@@ -62,6 +62,7 @@ const LoginPage = () => {
 
     } catch (error) {
       setError(error.message);
+      console.log(error)
       setLoading(false);
     }
   };
