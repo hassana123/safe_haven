@@ -67,7 +67,7 @@ const LoginPage = () => {
 
 
   return (
-    <div className="flex flex-col py-5 mt-10 min-h-screen bg-white justify-center">
+    <div className="flex flex-col p-5 items-center  mt-10 min-h-screen bg-white justify-center">
       <div className="flex-1 flex flex-col px-6 pt-8 pb-12">
         <div className="flex items-center justify-center mb-8">
           <img
@@ -132,11 +132,11 @@ const LoginPage = () => {
           </button>
         </form>
 
-        <p className="text-center mt-6">
+        <p className="text-center mt-6 text-gray-500">
           Don't have an account?{" "}
           <NavLink
             to="/register"
-            className="text-custom-pink font-medium hover:underline transition duration-200"
+            className="text-custom-pink font-medium hover:underline transition duration-200 mx-1"
           >
             Sign up
           </NavLink>
