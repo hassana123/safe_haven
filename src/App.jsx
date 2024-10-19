@@ -3,7 +3,6 @@ import { RouterProvider } from "react-router-dom";
 import { auth } from "../firebase"; // Firebase auth import
 import { onAuthStateChanged } from "firebase/auth"; // To listen for auth state changes
 import SplashScreen from "./components/SplashScreen";
-import { onAuthStateChanged } from "firebase/auth";
 function App({router}) {
   const [showSplash, setShowSplash] = useState(true);
   const [user, setUser] = useState(null); // To store the logged-in user
@@ -15,9 +14,7 @@ function App({router}) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user); // User is logged in
-         user.getIdToken(true).then((token) => {
-        // Token refreshed
-      });
+      
       } else {
         setUser(null); // User is logged out
       }
