@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Pause, Play, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+i
 
 const Meditate = () => {
   const navigate = useNavigate();
@@ -85,7 +85,7 @@ const Meditate = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <Navbar />
+     
       
       {/* Main Content */}
       <div className="flex-1 mt-10 px-4 py-5">

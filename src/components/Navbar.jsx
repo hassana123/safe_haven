@@ -66,6 +66,7 @@ const Navbar = () => {
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <NavLink 
+           onClick={toggleMenu}
             to="/home" 
             className={({ isActive }) => 
               `block px-3 py-2 rounded-md text-base font-medium ${
@@ -78,6 +79,7 @@ const Navbar = () => {
             Home
           </NavLink>
           <NavLink 
+           onClick={toggleMenu}
             to="/report" 
             className={({ isActive }) => 
               `block px-3 py-2 rounded-md text-base font-medium ${
@@ -90,6 +92,7 @@ const Navbar = () => {
             Report
           </NavLink>
           <NavLink 
+          onClick={toggleMenu}
             to="/meditate" 
             className={({ isActive }) => 
               `block px-3 py-2 rounded-md text-base font-medium ${
@@ -102,7 +105,8 @@ const Navbar = () => {
            Meditate
           </NavLink>
           <NavLink 
-            to="/about" 
+           onClick={toggleMenu}
+            to="/sos-form" 
             className={({ isActive }) => 
               `block px-3 py-2 rounded-md text-base font-medium ${
                 isActive 
@@ -111,7 +115,20 @@ const Navbar = () => {
               }`
             }
           >
-            About
+            Add SOS
+          </NavLink>
+          <NavLink 
+           onClick={toggleMenu}
+            to="/sos-list" 
+            className={({ isActive }) => 
+              `block px-3 py-2 rounded-md text-base font-medium ${
+                isActive 
+                  ? 'bg-custom-blue text-white' 
+                  : 'text-custom-blue hover:text-custom-dark-blue hover:bg-gray-100'
+              }`
+            }
+          >
+            SOS Contacts
           </NavLink>
           <button 
             onClick={handleLogout} 

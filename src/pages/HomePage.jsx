@@ -2,11 +2,11 @@ import React from "react";
 import Greeting from "../components/Greeting";
 import TrueStory from "../components/TrueStory";
 import ActionGrid from "../components/ActionGrid";
-import Navbar from "../components/Navbar";
+
 const HomePage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-white">
-     <Navbar/>
+  
       <Greeting />
       <TrueStory />
       <ActionGrid />

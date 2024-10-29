@@ -1,8 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import { useState } from "react";
 
 import LandingPage from "./pages/LandingPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -10,9 +9,11 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import ReportIncident from "./pages/ReportIncident";
 import Meditate from "./pages/Meditate";
-import PrivateRoute from "./components/PrivateRoute"; // Import PrivateRoute
-import App from "./App";
-import PublicRoute from "./components/PublicRoute";
+import PrivateRoute from "./components/PrivateRoute";
+import SOSForm from "./pages/SOSForm";
+import SOSList from "./pages/SOSContact";
+import Layout from "./components/Layout";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,31 +28,54 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path: "home",
-    element: (
-      <PrivateRoute>
-        <HomePage />
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: "report",
-    element: (
-      <PrivateRoute>
-        <ReportIncident />
-      </PrivateRoute>
-    ),
-  },
-  {
-    path: "meditate",
-    element: (
-      <PrivateRoute>
-        <Meditate />
-      </PrivateRoute>
-    ),
+    element: <Layout />,
+    children: [
+      {
+        path: "home",
+        element: (
+          <PrivateRoute>
+            <HomePage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "report",
+        element: (
+          <PrivateRoute>
+            <ReportIncident />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "meditate",
+        element: (
+          <PrivateRoute>
+            <Meditate />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "sos-form",
+        element: (
+          <PrivateRoute>
+            <SOSForm />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "sos-list",
+        element: (
+          <PrivateRoute>
+            <SOSList />
+          </PrivateRoute>
+        ),
+      },
+    ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <App router={router} />
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
 );
