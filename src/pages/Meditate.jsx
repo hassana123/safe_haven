@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Pause, Play, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -8,6 +8,11 @@ const Meditate = () => {
   const [time, setTime] = useState(300); // 5 minutes in seconds
   const [isActive, setIsActive] = useState(false);
   const [breatheText, setBreatheText] = useState('Breathe in');
+  const [isBreathingIn, setIsBreathingIn] = useState(true);
+  
+  const backgroundAudioRef = useRef(null);
+  const breatheInAudioRef = useRef(null);
+  const breatheOutAudioRef = useRef(null);
 
   useEffect(() => {
     let interval = null;
@@ -17,33 +22,65 @@ const Meditate = () => {
       }, 1000);
     } else if (time === 0) {
       setIsActive(false);
+      stopAudio();
     }
     return () => clearInterval(interval);
   }, [isActive, time]);
 
   useEffect(() => {
+    let breatheInterval = null;
     if (isActive) {
-      const breatheInterval = setInterval(() => {
-        setBreatheText((text) => (text === 'Breathe in' ? 'Breathe out' : 'Breathe in'));
+      breatheInterval = setInterval(() => {
+        setBreatheText((text) => {
+          const newText = text === 'Breathe in' ? 'Breathe out' : 'Breathe in';
+          setIsBreathingIn(newText === 'Breathe in');
+          return newText;
+        });
       }, 4000); // Switch every 4 seconds
-      return () => clearInterval(breatheInterval);
     }
+    return () => clearInterval(breatheInterval);
   }, [isActive]);
 
   const toggleTimer = () => {
     setIsActive(!isActive);
+    if (!isActive) {
+      playBackgroundAudio();
+    } else {
+      pauseBackgroundAudio();
+    }
   };
 
   const stopAndReset = () => {
     setIsActive(false);
     setTime(300);
     setBreatheText('Breathe in');
+    setIsBreathingIn(true);
+    stopAudio();
   };
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const playBackgroundAudio = () => {
+    if (backgroundAudioRef.current) {
+      backgroundAudioRef.current.play();
+    }
+  };
+
+  const pauseBackgroundAudio = () => {
+    if (backgroundAudioRef.current) {
+      backgroundAudioRef.current.pause();
+    }
+  };
+
+  const stopAudio = () => {
+    if (backgroundAudioRef.current) {
+      backgroundAudioRef.current.pause();
+      backgroundAudioRef.current.currentTime = 0;
+    }
   };
 
   return (
@@ -63,9 +100,21 @@ const Meditate = () => {
           <div className="text-6xl font-bold">{formatTime(time)}</div>
           
           <div className="relative w-48 h-48">
-            <div className="absolute inset-0 bg-purple-200 rounded-full opacity-50 animate-pulse"></div>
-            <div className="absolute inset-4 bg-purple-300 rounded-full opacity-50 animate-pulse animation-delay-200"></div>
-            <div className="absolute inset-8 bg-purple-400 rounded-full opacity-50 animate-pulse animation-delay-400"></div>
+            <div 
+              className={`absolute inset-0 bg-purple-200 rounded-full opacity-50 transition-all duration-4000 ease-in-out ${
+                isActive ? (isBreathingIn ? 'scale-100' : 'scale-75') : ''
+              }`}
+            ></div>
+            <div 
+              className={`absolute inset-4 bg-purple-300 rounded-full opacity-50 transition-all duration-4000 ease-in-out ${
+                isActive ? (isBreathingIn ? 'scale-100' : 'scale-75') : ''
+              }`}
+            ></div>
+            <div 
+              className={`absolute inset-8 bg-purple-400 rounded-full opacity-50 transition-all duration-4000 ease-in-out ${
+                isActive ? (isBreathingIn ? 'scale-100' : 'scale-75') : ''
+              }`}
+            ></div>
           </div>
 
           <div className="text-2xl font-medium text-gray-600">{breatheText}</div>
@@ -97,6 +146,17 @@ const Meditate = () => {
           </div>
         </div>
       </div>
+
+      {/* Audio elements */}
+      <audio ref={backgroundAudioRef} loop>
+        <source src="../src/assets/medi.mp3" type="audio/mpeg" />
+      </audio>
+      <audio ref={breatheInAudioRef}>
+        <source src="/audio/breathe-in.mp3" type="audio/mpeg" />
+      </audio>
+      <audio ref={breatheOutAudioRef}>
+        <source src="/audio/breathe-out.mp3" type="audio/mpeg" />
+      </audio>
     </div>
   );
 };
