@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Pause, Play, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-i
+
 
 const Meditate = () => {
   const navigate = useNavigate();
