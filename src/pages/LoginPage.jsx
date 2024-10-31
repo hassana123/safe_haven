@@ -54,6 +54,8 @@ const LoginPage = () => {
       }
 
       // Sign in anonymously and navigate to the home page
+      localStorage.setItem("username", username);
+    
      
       console.log("Logged in with username:", username);
       setLoading(false);

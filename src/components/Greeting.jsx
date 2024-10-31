@@ -4,7 +4,7 @@ const Greeting = () => {
   return (
     <div className="flex justify-between mt-10 items-start px-5 py-4">
     <div>
-      <h1 className="text-xl font-bold">GoodDay Anonymous,</h1>
+      <h1 className="text-xl font-bold">GoodDay {localStorage.getItem("username")},</h1>
       <p className="text-sm text-gray-600">
         Welcome to Safe Haven.<br />
         How can we support you today?

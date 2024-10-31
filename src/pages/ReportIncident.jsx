@@ -9,48 +9,28 @@ import SendReportToActivist from '../components/SendReportToActivist';
 const ReportIncident = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-  const [showSendToActivist, setShowSendToActivist] = useState(false);
-  const { formData, handleInputChange, handleFileUpload } = useFormData();
+  const { formData, handleInputChange, handleFileUpload, submitReport, setShowSendToActivist, validateForm, sendReportToActivist, showSendToActivist, successFinal, success,loading , validationErrors, error} = useFormData();
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  //const [isSuccess, setIsSuccess] = useState(false);
+  //const [errorMessage, setErrorMessage] = useState('');
 
-  const handleNextStep = () => setStep(prevStep => prevStep + 1);
-  const handlePrevStep = () => setStep(prevStep => prevStep - 1);
+  const handleNextStep = () => {
+    validateForm()
+    setStep(prevStep => prevStep + 1)
+  }
+  const handlePrevStep =  () => setStep(prevStep => prevStep - 1);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    try {
-      // Simulating API call
-      //await new Promise(resolve => setTimeout(resolve, 2000));
-      console.log('Submitted data:', formData);
-      //navigate('/home'); // Navigate to home page after submission
-      setShowSendToActivist(true);
-    } catch (error) {
-      console.error('Error submitting form:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    await submitReport();
+    console.log("done");  
+};
   const handleSendToActivist = async (selectedActivist) => {
-    setIsLoading(true);
-    try {
-      // Simulating API call to send report to activist
-     // await new Promise(resolve => setTimeout(resolve, 2000));
-      console.log('Sent report to activist:', selectedActivist);
-      setShowSendToActivist(false);
-      setIsSuccess(true);
-      setTimeout(() => {
-        setIsSuccess(false);
-        navigate('/home');
-      }, 3000);
-    } catch (error) {
-      console.error('Error sending report to activist:', error);
-      setErrorMessage('An error occurred while sending the report to the activist. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
+   await sendReportToActivist(selectedActivist)
+  // console.log(successFinal);
+    console.log('Sent report to activist:', selectedActivist);
+     
+   
   };
 
   const renderStep = () => {
@@ -58,7 +38,7 @@ const ReportIncident = () => {
       case 1:
         return <StepOne formData={formData} handleInputChange={handleInputChange} />;
       case 2:
-        return <StepTwo isLoading={isLoading} formData={formData} handleInputChange={handleInputChange} handleFileUpload={handleFileUpload} />;
+        return <StepTwo isLoading={loading} formData={formData} handleInputChange={handleInputChange} handleFileUpload={handleFileUpload} />;
       default:
         return null;
     }
@@ -66,13 +46,15 @@ const ReportIncident = () => {
 
   return (
     <ReportLayout title="Report an Incident" onBack={() => navigate(-1)}>
-       {errorMessage && (
+       {error && (
         <div className="bg-red-100 text-red-800 p-4 mb-4 rounded-lg">
-          <p>{errorMessage}</p>
+          <p>{error}</p>
         </div>
       )}
+      {validationErrors.category && <p className="text-red-500 text-sm">{validationErrors.category}</p>}
 
-      {isSuccess && (
+
+      {successFinal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg p-6 w-full max-w-sm text-center">
             <h2 className="text-2xl font-bold mb-4">Successful!</h2>
@@ -87,7 +69,7 @@ const ReportIncident = () => {
         </div>
       )}
 
-      {!showSendToActivist && !isSuccess && (
+     
         <>
         <p className="text-gray-600 mb-6">
         Please provide details about the incident. Your report is completely anonymous.
@@ -97,16 +79,16 @@ const ReportIncident = () => {
         {renderStep()}
         <NavigationButtons
           step={step}
-          isLoading={isLoading}
+          isLoading={loading}
           onPrev={handlePrevStep}
           onNext={handleNextStep}
         />
         {step === 2&&(  <button
         type="submit"
         className="px-4 py-2 text-sm font-medium text-white bg-custom-blue rounded-md hover:bg-custom-blue-dark"
-        disabled={isLoading}
+        disabled={loading}
       >
-        {isLoading ? (
+        {loading? (
           <div className="flex items-center justify-center">
             <div className="w-2 h-2 bg-white rounded-full mr-1 animate-bounce"></div>
             <div className="w-2 h-2 bg-white rounded-full mr-1 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
@@ -118,9 +100,10 @@ const ReportIncident = () => {
       </button>)}
       </form>
         </>
-      )}
-       {showSendToActivist && (
+   
+       {showSendToActivist &&  (
         <SendReportToActivist
+        loading={loading}
           onClose={() => setShowSendToActivist(false)}
           onSubmit={handleSendToActivist}
         />

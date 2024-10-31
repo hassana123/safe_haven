@@ -15,7 +15,8 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth); // Sign out the user
-      navigate("/login"); // Redirect to the login page or landing page
+      localStorage.removeItem("userId")
+      navigate("/login"); // Redirect to the login page or landing pagec
     } catch (error) {
       console.error("Error logging out: ", error); // Log any errors if they occur
     }
@@ -24,8 +25,8 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-18">
           <div className="flex-shrink-0 flex items-center">
             {/* <svg className="h-8 w-8 text-custom-blue" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
@@ -61,9 +62,10 @@ const Navbar = () => {
 
       <div 
         className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${
-          isMenuOpen ? 'max-h-56 opacity-100' : 'max-h-0 opacity-0'
+          isMenuOpen ? 'max-h-59 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
+        
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <NavLink 
            onClick={toggleMenu}
@@ -132,12 +134,14 @@ const Navbar = () => {
           </NavLink>
           <button 
             onClick={handleLogout} 
-            className="block px-3 py-2 rounded-md text-base font-medium text-custom-blue hover:text-custom-dark-blue hover:bg-gray-100"
+            className="block px-3 py-2  rounded-md text-base font-medium text-custom-blue hover:text-custom-dark-blue hover:bg-gray-100"
           >
             Logout
           </button>
         </div>
+        
       </div>
+      
     </nav>
   );
 };

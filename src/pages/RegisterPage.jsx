@@ -40,9 +40,7 @@ const RegisterPage = () => {
     e.preventDefault();
     setError('');
     setLoading(true); 
-
     if (!validateForm()) return;
-
     try {
       // 2. Sign in anonymously
       const userCredential = await signInAnonymously(auth);
@@ -65,8 +63,10 @@ const RegisterPage = () => {
         username,
         passcode,
       });
+      localStorage.setItem("userId", user.uid)
+      localStorage.setItem("username", username);
 
-      console.log('Account created', { username, passcode, user });
+      console.log('Account created',  username );
       setLoading(false); 
       navigate("/home");
     } catch (error) {

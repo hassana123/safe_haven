@@ -13,11 +13,14 @@ import PrivateRoute from "./components/PrivateRoute";
 import SOSForm from "./pages/SOSForm";
 import SOSList from "./pages/SOSContact";
 import Layout from "./components/Layout";
+import PublicRoute from "./components/PublicRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <LandingPage />,
+    element: <PublicRoute>
+       <LandingPage />
+    </PublicRoute>,
   },
   {
     path: "register",

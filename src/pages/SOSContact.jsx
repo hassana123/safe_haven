@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, Plus, MoreVertical } from 'lucide-react';
+import { ArrowLeft, Search, Plus, MoreVertical, Phone, AlertTriangle } from 'lucide-react';
 import useSOSContacts from '../hooks/useSOSContacts';
 
 const SOSContact = ({ contact, onSendAlert, onCall }) => (
@@ -17,13 +17,18 @@ const SOSContact = ({ contact, onSendAlert, onCall }) => (
       </div>
     </div>
     <div className="flex space-x-2">
-      <button onClick={onSendAlert} className="px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm">
+      <button 
+        onClick={onSendAlert} 
+        className="px-3 py-1 bg-red-100 text-red-600 rounded-full text-sm flex items-center"
+      >
+        <AlertTriangle className="w-4 h-4 mr-1" />
         Send Alert
       </button>
-      <button onClick={onCall} className="p-2 bg-green-100 text-green-600 rounded-full">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-        </svg>
+      <button 
+        onClick={onCall} 
+        className="p-2 bg-green-100 text-green-600 rounded-full"
+      >
+        <Phone className="w-5 h-5" />
       </button>
     </div>
   </div>
@@ -31,15 +36,21 @@ const SOSContact = ({ contact, onSendAlert, onCall }) => (
 
 const SOSList = () => {
   const navigate = useNavigate();
-  const { contacts } = useSOSContacts();
+  const { contacts, loading, error, toggleFavorite } = useSOSContacts();
   const [filter, setFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredContacts = contacts.filter(contact => {
-    if (filter === 'all') return true;
-    if (filter === 'recent') return contact.recent;
-    if (filter === 'favorites') return contact.favorite;
-    return true;
-  });
+  const filteredContacts = contacts
+    .filter(contact => {
+      if (searchTerm) {
+        return contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+               contact.number.includes(searchTerm);
+      }
+      if (filter === 'all') return true;
+      if (filter === 'recent') return contact.recent;
+      if (filter === 'favorites') return contact.favorite;
+      return true;
+    });
 
   const handleSendAlert = (contact) => {
     // Implement send alert functionality
@@ -48,9 +59,8 @@ const SOSList = () => {
 
   const handleCall = (contact) => {
     // Implement call functionality
-    console.log('Calling', contact);
+    window.location.href = `tel:${contact.number}`;
   };
- 
 
   return (
     <div className="flex flex-col min-h-screen bg-white p-4">
@@ -63,7 +73,9 @@ const SOSList = () => {
           <button className="p-2">
             <Search className="h-6 w-6" />
           </button>
-          <button onClick={() => navigate('/sos-form')} className="p-2">
+          <button onClick={() => 
+
+ navigate('/sos-form')} className="p-2">
             <Plus className="h-6 w-6" />
           </button>
           <button className="p-2">
@@ -71,6 +83,12 @@ const SOSList = () => {
           </button>
         </div>
       </div>
+
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-md">
+          {error}
+        </div>
+      )}
 
       <div className="flex space-x-2 mb-4">
         <button
@@ -93,16 +111,28 @@ const SOSList = () => {
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
-        {filteredContacts.map((contact, index) => (
-          <SOSContact
-            key={index}
-            contact={contact}
-            onSendAlert={() => handleSendAlert(contact)}
-            onCall={() => handleCall(contact)}
-          />
-        ))}
-      </div>
+      {loading ? (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-custom-blue"></div>
+        </div>
+      ) : (
+        <div className="flex-1 overflow-y-auto">
+          {filteredContacts.length === 0 ? (
+            <div className="text-center text-gray-500 mt-8">
+              No contacts found. Add your first emergency contact.
+            </div>
+          ) : (
+            filteredContacts.map((contact, index) => (
+              <SOSContact
+                key={`${contact.name}-${contact.number}-${index}`}
+                contact={contact}
+                onSendAlert={() => handleSendAlert(contact)}
+                onCall={() => handleCall(contact)}
+              />
+            ))
+          )}
+        </div>
+      )}
 
       <button
         onClick={() => navigate('/sos-form')}

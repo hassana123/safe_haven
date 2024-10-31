@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 
-const SendReportToActivist = ({ onClose, onSubmit }) => {
+const SendReportToActivist = ({loading, onClose, onSubmit }) => {
   const [selectedActivist, setSelectedActivist] = useState('');
 
   const handleSubmit = (e) => {
@@ -48,7 +48,16 @@ const SendReportToActivist = ({ onClose, onSubmit }) => {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
-            Send Report
+            {loading? (
+          <div className="flex items-center justify-center">
+            <div className="w-2 h-2 bg-white rounded-full mr-1 animate-bounce"></div>
+            <div className="w-2 h-2 bg-white rounded-full mr-1 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+          </div>
+        ) : (
+          '  Send Report'
+        )}
+          
           </button>
         </form>
       </div>

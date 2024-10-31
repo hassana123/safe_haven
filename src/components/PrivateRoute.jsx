@@ -21,7 +21,7 @@ const PrivateRoute = ({ children }) => {
     return <SplashScreen />; // Show splash screen while checking auth
   }
 
-  return user ? children : <Navigate to="/" />; // If authenticated, show the protected route, otherwise redirect to login
+  return user || localStorage.getItem("userId") ? children : <Navigate to="/" />; // If authenticated, show the protected route, otherwise redirect to login
 };
 
 export default PrivateRoute;
