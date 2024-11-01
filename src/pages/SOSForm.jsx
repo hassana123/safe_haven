@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSOSContacts from '../hooks/useSOSContacts';
 import { CheckCircle, X, ArrowLeft } from 'lucide-react';
+import FormField from '../components/FormField';
 
 const SOSForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [remember, setRemember] = useState(false);
+  const [customMessage, setCustomMessage] = useState(''); // New state for custom SOS message
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [conts, setCont] = useState(false);
   const [error, setError] = useState('');
@@ -18,28 +20,38 @@ const SOSForm = () => {
     return phoneRegex.test(number);
   };
 
+  const formatNigerianNumber = (number) => {
+    // Check if the number starts with "0" and has 11 digits (valid Nigerian number)
+    if (/^0\d{10}$/.test(number)) {
+      return `+234${number.slice(1)}`; // Replace the first "0" with "+234"
+    }
+    return number; // Return the number as is if it doesn't meet the criteria
+  };
+
   const handleSubmit = async () => {
-    //setError('');
-console.log("cliccked");
+    console.log("Clicked");
 
     if (!name.trim()) {
       setError('Please enter a contact name');
       return;
     }
 
-    if (!validatePhoneNumber(number)) {
+    // Format the number if it's a valid Nigerian number
+    const formattedNumber = formatNigerianNumber(number);
+
+    if (!validatePhoneNumber(formattedNumber)) {
       setError('Please enter a valid phone number');
       return;
     }
 
-    const success = await addContact({ name, number });
-    console.log(success);
-    
+    const contactData = { name, number: formattedNumber, customMessage }; // Include formatted number
+    const success = await addContact(contactData);
 
     if (success) {
       if (!remember) {
         setName('');
         setNumber('');
+        setCustomMessage('');
       }
       setShowSuccessModal(true);
     }
@@ -51,6 +63,7 @@ console.log("cliccked");
       setShowSuccessModal(false);
       setName('');
       setNumber('');
+      setCustomMessage('');
     } else {
       navigate('/home');
     }
@@ -81,36 +94,34 @@ console.log("cliccked");
         setCont(false);
         handleSubmit();
       }} className="space-y-8">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-            Contact Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-3 py-2 border bg-white border-gray-300 rounded-md"
-            placeholder="This can be anything, no email or phone number required"
-            required
-          />
-        </div>
-        
-        <div>
-          <label htmlFor="number" className="block text-sm font-medium text-gray-700 mb-1">
-            Contact Number
-          </label>
-          <input
-            type="tel"
-            id="number"
-            value={number}
-            onChange={(e) => setNumber(e.target.value)}
-            className="w-full px-3 py-2 border bg-white border-gray-300 rounded-md"
-            placeholder="Valid phone number (e.g., +254700000000)"
-            required
-          />
-        </div>
-        
+        <FormField
+          label="Contact Name"
+          type="text"
+          name="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Contact Name"
+        />
+
+        <FormField
+          label="Contact Number"
+          type="tel"
+          name="number"
+          value={number}
+          onChange={(e) => setNumber(e.target.value)}
+          placeholder="Valid phone number (e.g., 08060618637)"
+        />
+
+        {/* New FormField for Custom SOS Message */}
+        <FormField
+          label="Custom SOS Message (Optional)"
+          type="textarea"
+          name="customMessage"
+          value={customMessage}
+          onChange={(e) => setCustomMessage(e.target.value)}
+          placeholder="Write your custom emergency message here..."
+        />
+
         <div className="flex items-center">
           <input
             type="checkbox"

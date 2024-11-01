@@ -1,6 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import { db } from '../../firebase';
+import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 
 const TrueStory = () => {
+  const [latestStory, setLatestStory] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLatestStory = async () => {
+      try {
+        const trueStoriesRef = collection(db, 'trueStories');
+        const q = query(trueStoriesRef, orderBy('date', 'desc'), limit(1));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const storyData = querySnapshot.docs[0].data();
+          // Convert the date to a readable format
+          if (storyData.date) {
+            const date = new Date(storyData.date);
+            storyData.formattedDate = new Intl.DateTimeFormat('en-US', {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            }).format(date);
+          }
+          setLatestStory(storyData);
+        }
+      } catch (error) {
+        console.error('Error fetching the latest story:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLatestStory();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center p-4">Loading...</div>;
+  }
+
+  if (!latestStory) {
+    return <div className="text-center p-4">No stories available yet.</div>;
+  }
+
   return (
     <div className="bg-custom-blue text-white rounded-lg p-2 mx-3 mb-6">
       <div className="flex items-center mb-2">
@@ -19,13 +62,12 @@ const TrueStory = () => {
           />
         </svg>
         <h2 className="text-lg font-semibold">True Stories</h2>
-        <span className="ml-auto text-sm">27th September, 2024</span>
+        <span className="ml-auto text-sm">{latestStory.formattedDate}</span>
       </div>
       <p className="mb-4 text-sm">
-        It started with small things, like harsh words and silent treatments,
-        but over time, it became much worse. I never thought it could happen to
-        me, until the day I realized I was no longer in control of my own
-        life....
+        {latestStory.content.length > 150
+          ? `${latestStory.content.slice(0, 150)}...`
+          : latestStory.content}
       </p>
       <button className="bg-white text-custom-blue px-4 py-2 rounded-full text-sm font-medium hover:bg-opacity-90 transition duration-200">
         Read My Story

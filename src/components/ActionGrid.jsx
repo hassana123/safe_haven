@@ -8,7 +8,7 @@ const ActionGrid = () => {
     { icon: <Brain className="w-8 h-8" />, label: 'Self-Therapy', link:"/self-therapy"},
     { icon: <BookLock className="w-8 h-8" />, label: 'Journal', link:"/Journal"},
     { icon: <BookOpen className="w-8 h-8" />, label: 'Support & Education', link:"/support"},
-    { icon: <Users className="w-8 h-8" />, label: 'Consult an Activist or Therapist' , link:""},
+    { icon: <Users className="w-8 h-8" />, label: 'Consult an Activist or Therapist' , link:"/consult"},
     { icon: <Lock className="w-8 h-8" />, label: 'Share Your Story Anonymously',link:"/share-story" },
   ];
 

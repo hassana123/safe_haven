@@ -22,7 +22,7 @@ const PublicRoute = ({ children }) => {
   };
 
   if (loading) {
-    return <SplashScreen  />;; // Show splash screen while checking auth
+    return <SplashScreen onFinish={handleSplashFinish} />;; // Show splash screen while checking auth
   }
 
   return !user ? children : <Navigate to="/home" />; // If not logged in, render the route, otherwise redirect to home

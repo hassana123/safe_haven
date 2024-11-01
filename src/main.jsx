@@ -19,6 +19,7 @@ import Affirmations from "./pages/Affirmations";
 import CreativeExp from "./pages/CreativeExp";
 import Journal from "./pages/Journal";
 import StoryPage from "./pages/StoryPage";
+import ConsultPage from "./pages/ConsultPage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -85,6 +86,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <StoryPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "consult",
+        element: (
+          <PrivateRoute>
+            <ConsultPage />
           </PrivateRoute>
         ),
       },

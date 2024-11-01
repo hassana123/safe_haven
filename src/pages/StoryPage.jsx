@@ -4,7 +4,7 @@ import StorySuccessModal from '../components/StorySuccesModal';
 import StoryList from '../components/StoryList';
 
 const StoryPage = () => {
-  const [currentView, setCurrentView] = useState('list');
+  const [currentView, setCurrentView] = useState('entry');
 
   return (
     <div>
@@ -14,7 +14,7 @@ const StoryPage = () => {
         <StoryList setCurrentView={setCurrentView} />
         <StorySuccessModal setCurrentView={setCurrentView} />
       </>}
-    
+      hey
     </div>
   );
 };

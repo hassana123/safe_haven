@@ -39,7 +39,7 @@ const LoginPage = () => {
       const querySnapshot = await getDoc(doc(db, 'users', username));
 
       if (!querySnapshot.exists()) {
-        setError("No account found with this username");
+        setError("No account found with this username Or Might be due network issues please try again");
         setLoading(false);
         return;
       }

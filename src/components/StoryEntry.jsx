@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { ChevronLeft, Edit3 } from 'lucide-react';
+import { ChevronLeft, Edit3, BookOpen } from 'lucide-react';
 import { db } from '../../firebase';
-import { doc, updateDoc, arrayUnion, setDoc, collection } from 'firebase/firestore';
+import { doc, updateDoc, arrayUnion, setDoc, collection  } from 'firebase/firestore';
 import FormField from '../components/FormField';
 
 const StoryEntryForm = ({ setCurrentView }) => {
@@ -27,7 +27,7 @@ const StoryEntryForm = ({ setCurrentView }) => {
     const userId = localStorage.getItem('userId');
     const username = localStorage.getItem('username');
 
-    if (!userId || !username) {
+    if (!userId && !username) {
       alert('User not found. Please log in again.');
       return;
     }
@@ -63,11 +63,14 @@ const StoryEntryForm = ({ setCurrentView }) => {
 
   return (
     <div className="min-h-screen bg-white p-4 my-10">
-      <header className="flex items-center mb-4">
-        <button onClick={() => setCurrentView('list')} className="mr-2">
+      <header className="flex items-center mb-4 justify-between">
+       <div className='flex'>
+       <button onClick={() => setCurrentView('list')} className="mr-2">
           <ChevronLeft className="h-6 w-6 text-gray-600" />
         </button>
         <h1 className="text-xl font-semibold">Share Your Story</h1>
+       </div>
+        <BookOpen onClick={()=> setCurrentView("list")}/ >
       </header>
       <div className="mt-4">
         <div className="flex justify-between items-center">

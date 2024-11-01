@@ -9,7 +9,7 @@ const useSOSContacts = () => {
 
   // Get the current user's username from localStorage
   const username = localStorage.getItem('username');
-  console.log(username);
+  //console.log(username);
   
 
   // Fetch contacts on mount

@@ -4,6 +4,7 @@ import { ArrowLeft, Search, Plus, MoreVertical, Phone, AlertTriangle } from 'luc
 import useSOSContacts from '../hooks/useSOSContacts';
 
 const SOSContact = ({ contact, onSendAlert, onCall }) => (
+  
   <div className="flex items-center justify-between py-2">
     <div className="flex items-center">
       <div className="bg-gray-200 rounded-full p-2 mr-3">
@@ -39,6 +40,8 @@ const SOSList = () => {
   const { contacts, loading, error, toggleFavorite } = useSOSContacts();
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [sendingAlert, setSendingAlert] = useState(false);
 
   const filteredContacts = contacts
     .filter(contact => {
@@ -52,15 +55,40 @@ const SOSList = () => {
       return true;
     });
 
-  const handleSendAlert = (contact) => {
-    // Implement send alert functionality
-    console.log('Sending alert to', contact);
-  };
-
-  const handleCall = (contact) => {
-    // Implement call functionality
-    window.location.href = `tel:${contact.number}`;
-  };
+    const handleSendAlert = async (contact) => {
+      console.log(contact);
+      
+      try {
+        setSendingAlert(true);
+        const response = await fetch('https://safe-backend-beta.vercel.app/incoming-messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text: contact.customMessage|| 'Emergency! Please assist immediately.',
+            from: contact.number
+            , // Replace this with the sender's number or your app's identifier
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to send alert');
+        }
+  
+        console.log('Alert sent successfully to:', contact);
+        alert(`Alert sent to ${contact.name}`);
+      } catch (error) {
+        console.error('Error sending alert:', error);
+        alert('Failed to send alert. Please try again.');
+      } finally {
+        setSendingAlert(false);
+      }
+    };
+  
+    const handleCall = (contact) => {
+      window.location.href = `tel:${contact.number}`;
+    };
 
   return (
     <div className="flex flex-col min-h-screen bg-white p-4">
