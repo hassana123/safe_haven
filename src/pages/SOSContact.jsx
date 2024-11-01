@@ -64,10 +64,11 @@ const SOSList = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            text: `${contact.name}, ${index + 1}`, 
-            from: contact.number,
+            text: `${contact.name}, ${index + 1}`,
+            from: contact.number, // Ensure there's no space before the value
           }),
         });
+        
     
         if (!response.ok) {
           throw new Error('Failed to send alert');
