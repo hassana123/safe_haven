@@ -16,9 +16,13 @@ const PrivateRoute = ({ children }) => {
 
     return () => unsubscribe();
   }, []);
+  const handleSplashFinish = () => {
+    setShowSplash(false);
+  };
+
 
   if (loading) {
-    return <SplashScreen />; // Show splash screen while checking auth
+    return  <SplashScreen onFinish={handleSplashFinish} />; // Show splash screen while checking auth
   }
 
   return user || localStorage.getItem("userId") ? children : <Navigate to="/" />; // If authenticated, show the protected route, otherwise redirect to login

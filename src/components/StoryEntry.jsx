@@ -6,16 +6,16 @@ import FormField from '../components/FormField';
 
 const StoryEntryForm = ({ setCurrentView }) => {
   const [storyEntry, setStoryEntry] = useState({ title: '', content: '', date: new Date().toLocaleDateString() });
-  const [isPublic, setIsPublic] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isPublic, setIsPublic] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (type === 'checkbox') {
-      setIsPublic(checked);
-    } else {
-      setStoryEntry((prev) => ({ ...prev, [name]: value }));
-    }
+    const { name, value } = e.target;
+    setStoryEntry((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleTogglePublic = () => {
+    setIsPublic((prev) => !prev);
   };
 
   const handleSubmit = async () => {
@@ -90,13 +90,16 @@ const StoryEntryForm = ({ setCurrentView }) => {
           onChange={handleChange}
           placeholder="Tell us your story here..."
         />
-        <FormField
-          label="Share this story with the public"
-          type="checkbox"
-          name="isPublic"
-          checked={isPublic}
-          onChange={handleChange}
-        />
+        <div className="flex items-center mt-2">
+          <input
+            type="checkbox"
+            id="publicToggle"
+            checked={isPublic}
+            onChange={handleTogglePublic}
+            className="mr-2"
+          />
+          <label htmlFor="publicToggle" className="text-sm text-gray-700">Share this story with the public</label>
+        </div>
         <button
           onClick={handleSubmit}
           className={`mt-4 w-full py-2 rounded-md ${loading ? 'bg-gray-400' : 'bg-blue-600 text-white hover:bg-blue-700'}`}

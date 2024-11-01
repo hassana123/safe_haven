@@ -24,7 +24,7 @@ const Navbar = () => {
 
 
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-white shadow-md  my-1 pb-2">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-18">
           <div className="flex-shrink-0 flex items-center">
@@ -93,7 +93,7 @@ const Navbar = () => {
           >
             Report
           </NavLink>
-          <NavLink 
+          {/* <NavLink 
           onClick={toggleMenu}
             to="/meditate" 
             className={({ isActive }) => 
@@ -105,7 +105,7 @@ const Navbar = () => {
             }
           >
            Meditate
-          </NavLink>
+          </NavLink> */}
           <NavLink 
            onClick={toggleMenu}
             to="/sos-form" 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Pause, Play, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
+import medi from "../assets/medi.svg"
 
 const Meditate = () => {
   const navigate = useNavigate();
@@ -95,27 +95,16 @@ const Meditate = () => {
           </button>
           <h1 className="text-xl text-center font-semibold">Meditate</h1>
         </div>
+        
 
         <div className="flex flex-col items-center justify-center space-y-8">
           <div className="text-6xl font-bold">{formatTime(time)}</div>
-          
-          <div className="relative w-48 h-48">
-            <div 
-              className={`absolute inset-0 bg-purple-200 rounded-full opacity-50 transition-all duration-4000 ease-in-out ${
-                isActive ? (isBreathingIn ? 'scale-100' : 'scale-75') : ''
-              }`}
-            ></div>
-            <div 
-              className={`absolute inset-4 bg-purple-300 rounded-full opacity-50 transition-all duration-4000 ease-in-out ${
-                isActive ? (isBreathingIn ? 'scale-100' : 'scale-75') : ''
-              }`}
-            ></div>
-            <div 
-              className={`absolute inset-8 bg-purple-400 rounded-full opacity-50 transition-all duration-4000 ease-in-out ${
-                isActive ? (isBreathingIn ? 'scale-100' : 'scale-75') : ''
-              }`}
-            ></div>
-          </div>
+         
+         
+         
+          <div className={`relative w-48 h-48 transform transition-transform duration-[4000ms] ease-in-out ${isActive ? (isBreathingIn ? 'rotate-0' : 'rotate-180') : ''}`}>
+          <img src={medi} alt="Meditation Illustration" className="w-full h-full" />
+        </div>
 
           <div className="text-2xl font-medium text-gray-600">{breatheText}</div>
 
