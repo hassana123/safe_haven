@@ -4,7 +4,7 @@ import { FileText, Brain, Share2, BookOpen, Users, Heart , Lock, BookLock} from 
 
 const ActionGrid = () => {
   const actions = [
-    { icon: <FileText className="w-8 h-8" />, label: 'Report an Incident' , link:"/report"},
+    { icon: <FileText className="w-8 h-8" />, label: 'Report an Incident' , link:"/report-incident"},
     { icon: <Brain className="w-8 h-8" />, label: 'Self-Therapy', link:"/self-therapy"},
     { icon: <BookLock className="w-8 h-8" />, label: 'Journal', link:"/Journal"},
     { icon: <BookOpen className="w-8 h-8" />, label: 'Support & Education', link:"/support"},

@@ -82,7 +82,7 @@ const Navbar = () => {
           </NavLink>
           <NavLink 
            onClick={toggleMenu}
-            to="/report" 
+            to="/report-incident" 
             className={({ isActive }) => 
               `block px-3 py-2 rounded-md text-base font-medium ${
                 isActive 

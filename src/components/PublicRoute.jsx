@@ -7,6 +7,7 @@ import SplashScreen from './SplashScreen';// Import the SplashScreen
 const PublicRoute = ({ children }) => {
   const [loading, setLoading] = useState(true); // Loading state for splash screen
   const [user, setUser] = useState(null); // Store the user state
+  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -21,7 +22,7 @@ const PublicRoute = ({ children }) => {
   };
 
   if (loading) {
-    return <SplashScreen onFinish={handleSplashFinish} />;; // Show splash screen while checking auth
+    return <SplashScreen  />;; // Show splash screen while checking auth
   }
 
   return !user ? children : <Navigate to="/home" />; // If not logged in, render the route, otherwise redirect to home

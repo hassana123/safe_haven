@@ -36,7 +36,7 @@ const router = createBrowserRouter([
     path: "login",
     element: <LoginPage />,
   },
-  
+
   {
     element: <Layout />,
     children: [
@@ -49,34 +49,44 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "report",
-        element:<PrivateRoute>
-           <ReportIncident />
-        </PrivateRoute>,
+        path: "report-incident",
+        element: (
+          <PrivateRoute>
+            <ReportIncident />
+          </PrivateRoute>
+        ),
       },
       {
         path: "sos-list",
-        element:<PrivateRoute>
-           <SOSList />
-        </PrivateRoute>
+        element: (
+          <PrivateRoute>
+            <SOSList />
+          </PrivateRoute>
+        ),
       },
       {
         path: "sos-form",
-        element: <PrivateRoute>
-          <SOSForm />
-        </PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <SOSForm />
+          </PrivateRoute>
+        ),
       },
       {
         path: "journal",
-        element: <PrivateRoute>
-          <Journal/>
-        </PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <Journal />
+          </PrivateRoute>
+        ),
       },
       {
         path: "share-story",
-        element:<PrivateRoute>
-           <StoryPage/>
-        </PrivateRoute>
+        element: (
+          <PrivateRoute>
+            <StoryPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "self-therapy",
@@ -86,32 +96,30 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-          {
-            path: "self-therapy/affirmations",
-            element: (
-              <PrivateRoute>
-                <Affirmations />
-              </PrivateRoute>
-            ),
-          },
-          {
-            path: "self-therapy/meditation",
-            element: (
-              <PrivateRoute>
-                <Meditate />
-              </PrivateRoute>
-            ),
-          },
-          {
-            path: "self-therapy/creative-expression",
-            element: (
-              <PrivateRoute>
-                <CreativeExp/>
-              </PrivateRoute>
-            ),
-          },
-       
-      
+      {
+        path: "self-therapy/affirmations",
+        element: (
+          <PrivateRoute>
+            <Affirmations />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "self-therapy/meditation",
+        element: (
+          <PrivateRoute>
+            <Meditate />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "self-therapy/creative-expression",
+        element: (
+          <PrivateRoute>
+            <CreativeExp />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);

@@ -10,9 +10,10 @@ const ReportIncident = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const { formData, handleInputChange, handleFileUpload, submitReport, setShowSendToActivist, validateForm, sendReportToActivist, showSendToActivist, successFinal, success,loading , validationErrors, error} = useFormData();
-  const [isLoading, setIsLoading] = useState(false);
+  //const [isLoading, setIsLoading] = useState(false);
   //const [isSuccess, setIsSuccess] = useState(false);
   //const [errorMessage, setErrorMessage] = useState('');
+  console.log('ReportIncident component rendering');
 
   const handleNextStep = () => {
     validateForm()

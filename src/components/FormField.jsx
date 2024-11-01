@@ -1,112 +1,63 @@
-import React, { useState } from 'react';
-import { ChevronLeft, Edit3 } from 'lucide-react';
-import { db } from '../../firebase';
-import { doc, updateDoc, arrayUnion, setDoc, collection } from 'firebase/firestore';
-import FormField from '../components/FormField';
+import React from 'react';
 
-const StoryEntryForm = ({ setCurrentView }) => {
-  const [storyEntry, setStoryEntry] = useState({ title: '', content: '', date: new Date().toLocaleDateString() });
-  const [isPublic, setIsPublic] = useState(false);
-  const [loading, setLoading] = useState(false);
+const FormField = ({ label, name, type, value, onChange, placeholder, options, checked }) => {
+  const baseClasses = "w-full px-3 py-2 border border-gray-300 rounded-md";
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (type === 'checkbox') {
-      setIsPublic(checked);
-    } else {
-      setStoryEntry((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (storyEntry.title.trim() === '' || storyEntry.content.trim() === '') {
-      alert('Please fill out all fields.');
-      return;
-    }
-
-    const userId = localStorage.getItem('userId');
-    const username = localStorage.getItem('username');
-
-    if (!userId || !username) {
-      alert('User not found. Please log in again.');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const userDocRef = doc(db, 'users', username);
-      // Add the story to the user's document
-      await updateDoc(userDocRef, {
-        stories: arrayUnion({ ...storyEntry, isPublic }),
-      });
-
-      // If the user chooses to share the story publicly, add it to the 'trueStories' collection
-      if (isPublic) {
-        const publicStory = {
-          ...storyEntry,
-          username,
-          userId,
-          isPublic: true,
-        };
-        const trueStoriesRef = collection(db, 'trueStories');
-        await setDoc(doc(trueStoriesRef), publicStory);
-      }
-
-      setLoading(false);
-      setCurrentView('success');
-    } catch (error) {
-      console.error('Error submitting story:', error);
-      setLoading(false);
-      alert('Failed to submit your story. Please try again.');
+  const renderField = () => {
+    switch (type) {
+      case 'select':
+        return (
+          <select name={name} value={value} onChange={onChange} className={`${baseClasses} bg-white`}>
+            {options.map(option => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </select>
+        );
+      case 'textarea':
+        return (
+          <textarea
+            name={name}
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            className={`${baseClasses} h-32 bg-white`}
+          />
+        );
+      case 'checkbox':
+        return (
+          <label className="flex items-center">
+            <input
+              type="checkbox"
+              name={name}
+              checked={checked}
+              onChange={onChange}
+              className="mr-2"
+            />
+            <span className="text-sm text-gray-700">{label}</span>
+          </label>
+        );
+      default:
+        return (
+          <input
+            type={type}
+            name={name}
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder}
+            className={`${baseClasses}  bg-white`}
+          />
+        );
     }
   };
 
   return (
-    <div className="min-h-screen bg-white p-4 my-10">
-      <header className="flex items-center mb-4">
-        <button onClick={() => setCurrentView('list')} className="mr-2">
-          <ChevronLeft className="h-6 w-6 text-gray-600" />
-        </button>
-        <h1 className="text-xl font-semibold">Share Your Story</h1>
-      </header>
-      <div className="mt-4">
-        <div className="flex justify-between items-center">
-          <FormField
-            label="Title"
-            type="text"
-            name="title"
-            value={storyEntry.title}
-            onChange={handleChange}
-            placeholder="Title"
-          />
-          <Edit3 className="w-5 h-5 text-gray-600" />
-        </div>
-        <p className="text-sm text-gray-500 mb-4">{storyEntry.date}</p>
-        <FormField
-          label="Content"
-          type="textarea"
-          name="content"
-          value={storyEntry.content}
-          onChange={handleChange}
-          placeholder="Tell us your story here..."
-        />
-        <FormField
-          label="Share this story with the public"
-          type="checkbox"
-          name="isPublic"
-          checked={isPublic}
-          onChange={handleChange}
-        />
-        <button
-          onClick={handleSubmit}
-          className={`mt-4 w-full py-2 rounded-md ${loading ? 'bg-gray-400' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
-          disabled={loading}
-        >
-          {loading ? 'Publishing...' : 'Publish'}
-        </button>
-      </div>
+    <div className="mb-4">
+      {type !== 'checkbox' && (
+        <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      )}
+      {renderField()}
     </div>
   );
 };
 
-export default StoryEntryForm;
+export default FormField;

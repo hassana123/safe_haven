@@ -214,11 +214,11 @@ export const useFormData = () => {
       console.log('Report successfully forwarded to the activist.');
 
       // Clear form data and close the Send to Activist component after success
-      setFormData(initialFormData);
+      setFormData({ ...initialFormData });
       setTimeout(() => {
         setShowSendToActivist(false);
       }, 2000);
-      setFormData(initialFormData);
+      
       
     } catch (err) {
       console.error('Error forwarding report to activist:', err);
