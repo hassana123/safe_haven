@@ -55,9 +55,7 @@ const SOSList = () => {
       return true;
     });
 
-    const handleSendAlert = async (contact) => {
-      console.log(contact);
-      
+    const handleSendAlert = async (contact, index) => {
       try {
         setSendingAlert(true);
         const response = await fetch('https://safe-haven-backend.vercel.app/incoming-messages', {
@@ -65,18 +63,18 @@ const SOSList = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: {
-            text: contact.customMessage|| 'Emergency! Please assist immediately.',
-            from: contact.number
-            , // Replace this with the sender's number or your app's identifier
-          },
+          body: JSON.stringify({
+            text: `${contact.name}, ${index + 1}`, 
+            from: contact.number,
+          }),
         });
-  
+    
         if (!response.ok) {
           throw new Error('Failed to send alert');
         }
-  
-        console.log('Alert sent successfully to:', contact);
+    
+        const result = await response.json();
+        console.log('Alert sent successfully:', result);
         alert(`Alert sent to ${contact.name}`);
       } catch (error) {
         console.error('Error sending alert:', error);
@@ -85,7 +83,8 @@ const SOSList = () => {
         setSendingAlert(false);
       }
     };
-  
+    
+    
     const handleCall = (contact) => {
       window.location.href = `tel:${contact.number}`;
     };
@@ -154,7 +153,7 @@ const SOSList = () => {
               <SOSContact
                 key={`${contact.name}-${contact.number}-${index}`}
                 contact={contact}
-                onSendAlert={() => handleSendAlert(contact)}
+                onSendAlert={() => handleSendAlert(contact, index)}
                 onCall={() => handleCall(contact)}
               />
             ))
