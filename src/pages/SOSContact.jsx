@@ -60,16 +60,16 @@ const SOSList = () => {
       
       try {
         setSendingAlert(true);
-        const response = await fetch('https://safe-haven-backend.vercel.app/incoming-messages', {
+        const response = await fetch('https://safe-haven-backend.vercel.app//incoming-messages', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
+          body: {
             text: contact.customMessage|| 'Emergency! Please assist immediately.',
             from: contact.number
             , // Replace this with the sender's number or your app's identifier
-          }),
+          },
         });
   
         if (!response.ok) {
