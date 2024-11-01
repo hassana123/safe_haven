@@ -60,7 +60,7 @@ const SOSList = () => {
       
       try {
         setSendingAlert(true);
-        const response = await fetch('https://safe-backend-beta.vercel.app/incoming-messages', {
+        const response = await fetch('https://safe-haven-backend.vercel.app/incoming-messages', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
