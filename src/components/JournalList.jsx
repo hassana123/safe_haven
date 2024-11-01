@@ -25,7 +25,9 @@ export const JournalList = ({ setCurrentView }) => {
 
         if (userDocSnap.exists()) {
           const data = userDocSnap.data();
-          setJournalEntries(data.journalEntries || []);
+          // Sort journal entries by date in descending order
+          const sortedEntries = (data.journalEntries || []).sort((a, b) => new Date(b.date) - new Date(a.date));
+          setJournalEntries(sortedEntries);
         } else {
           console.error('No such document!');
         }
@@ -60,7 +62,7 @@ export const JournalList = ({ setCurrentView }) => {
         <div className="space-y-4">
           {journalEntries.length > 0 ? (
             journalEntries.map((entry, index) => (
-              <div key={index} className="flex items-center  space-x-6 border-b border-gray-200 py-2">
+              <div key={index} className="flex items-center space-x-6 border-b border-gray-200 py-2">
                 <div className="flex-none text-purple-500 text-3xl font-semibold">
                   {new Date(entry.date).getDate().toString().padStart(2, '0')}
                 </div>

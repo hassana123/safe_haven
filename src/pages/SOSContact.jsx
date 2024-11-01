@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, Plus, MoreVertical, Phone, AlertTriangle } from 'lucide-react';
+import axios from 'axios'; // Import axios
 import useSOSContacts from '../hooks/useSOSContacts';
 
 const SOSContact = ({ contact, onSendAlert, onCall }) => (
-  
   <div className="flex items-center justify-between py-2">
     <div className="flex items-center">
       <div className="bg-gray-200 rounded-full p-2 mr-3">
@@ -53,42 +53,30 @@ const SOSList = () => {
       if (filter === 'recent') return contact.recent;
       if (filter === 'favorites') return contact.favorite;
       return true;
-    });
+    })
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort by createdAt field
 
-    const handleSendAlert = async (contact, index) => {
-      try {
-        setSendingAlert(true);
-        const response = await fetch('https://safe-haven-backend.vercel.app/incoming-messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            text: `${contact.name}, ${index + 1}`,
-            from: contact.number, // Ensure there's no space before the value
-          }),
-        });
-        
-    
-        if (!response.ok) {
-          throw new Error('Failed to send alert');
-        }
-    
-        const result = await response.json();
-        console.log('Alert sent successfully:', result);
-        alert(`Alert sent to ${contact.name}`);
-      } catch (error) {
-        console.error('Error sending alert:', error);
-        alert('Failed to send alert. Please try again.');
-      } finally {
-        setSendingAlert(false);
-      }
-    };
-    
-    
-    const handleCall = (contact) => {
-      window.location.href = `tel:${contact.number}`;
-    };
+  const handleSendAlert = async (contact, index) => {
+    try {
+      setSendingAlert(true);
+      const response = await axios.post('https://safe-haven-backend.vercel.app/incoming-messages', {
+        text: `${contact.name}, ${index + 1}`,
+        from: contact.number, // Ensure the number format is correct
+      });
+
+      console.log('Alert sent successfully:', response.data);
+      alert(`Alert sent to ${contact.name}`);
+    } catch (error) {
+      console.error('Error sending alert:', error);
+      alert('Failed to send alert. Please try again.');
+    } finally {
+      setSendingAlert(false);
+    }
+  };
+
+  const handleCall = (contact) => {
+    window.location.href = `tel:${contact.number}`;
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-white p-4">
@@ -101,9 +89,7 @@ const SOSList = () => {
           <button className="p-2">
             <Search className="h-6 w-6" />
           </button>
-          <button onClick={() => 
-
- navigate('/sos-form')} className="p-2">
+          <button onClick={() => navigate('/sos-form')} className="p-2">
             <Plus className="h-6 w-6" />
           </button>
           <button className="p-2">

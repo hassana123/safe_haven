@@ -15,7 +15,10 @@ const StoryList = ({ setCurrentView }) => {
         const userDocRef = doc(db, 'users', username);
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
-          setStories(userDoc.data().stories || []);
+          const fetchedStories = userDoc.data().stories || [];
+          // Sort stories by date in descending order
+          const sortedStories = fetchedStories.sort((a, b) => new Date(b.date) - new Date(a.date));
+          setStories(sortedStories);
         }
       } catch (error) {
         console.error('Error fetching stories:', error);
