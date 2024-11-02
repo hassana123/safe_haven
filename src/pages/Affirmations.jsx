@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Lightbulb } from 'lucide-react';
+import { ChevronLeft, Lightbulb, Mic } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const affirmations = [
@@ -49,7 +49,7 @@ const affirmations = [
 const Affirmations = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
-  const navigate =useNavigate()
+  const navigate = useNavigate();
 
   const slideVariants = {
     enter: (direction) => ({
@@ -78,6 +78,15 @@ const Affirmations = () => {
     });
   };
 
+  const handleReadAloud = () => {
+    const utterance = new SpeechSynthesisUtterance(affirmations[currentIndex].affirmation);
+    utterance.rate = 0.5; // Calm reading pace
+    utterance.pitch = 1; // Normal pitch
+    utterance.volume = 1; // Full volume
+    utterance.lang = 'en-US'; // Language setting
+    speechSynthesis.speak(utterance);
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <header className="flex items-center p-4 border-b">
@@ -91,7 +100,7 @@ const Affirmations = () => {
         <h1 className="ml-3 text-xl font-semibold">Affirmations & Positive Self-Talk</h1>
       </header>
 
-      <div className="relative h-[calc(100vh-4rem)] overflow-hidden flex  justify-center">
+      <div className="relative h-[calc(100vh-4rem)] overflow-hidden flex justify-center">
         <AnimatePresence initial={false} custom={direction}>
           <motion.div
             key={currentIndex}
@@ -107,7 +116,7 @@ const Affirmations = () => {
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={1}
-            onDragEnd={(e, { offset, velocity }) => {
+            onDragEnd={(e, { offset }) => {
               if (Math.abs(offset.x) > 100) {
                 paginate(offset.x > 0 ? -1 : 1);
               }
@@ -119,9 +128,12 @@ const Affirmations = () => {
                 {affirmations[currentIndex].intro}
               </p>
 
-              <div className={`rounded-lg p-6  h-[60vh] space-y-4 relative ${affirmations[currentIndex].backgroundColor}`}>
-                <div className="flex items-center gap-2 mb-2  ">
-                  <Lightbulb className="w-5 h-5 text-gray-700" />
+              <div
+                onClick={handleReadAloud}
+                className={`rounded-lg p-6 h-[60vh] space-y-4 relative cursor-pointer ${affirmations[currentIndex].backgroundColor}`}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <Mic onClick={handleReadAloud}  className="w-10 h-5 cursor-pointer text-gray-700" />
                   <span className="text-sm text-gray-700">Listen and Say with me</span>
                 </div>
 
@@ -140,12 +152,10 @@ const Affirmations = () => {
             </div>
             <div className="float-right mr-7">
               <div className="text-sm text-gray-500">
-                <p className='scale-125 inline-block font-bold'> {currentIndex + 1}</p> / {affirmations.length}
+                <p className="scale-125 inline-block font-bold"> {currentIndex + 1}</p> / {affirmations.length}
               </div>
             </div>
-           
           </motion.div>
-         
         </AnimatePresence>
       </div>
     </div>
