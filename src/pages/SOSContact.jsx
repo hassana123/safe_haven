@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, Plus, MoreVertical, Phone, AlertTriangle } from 'lucide-react';
 import useSOSContacts from '../hooks/useSOSContacts';
 
-const SOSContact = ({ contact, onSendAlert, onCall }) => (
+const SOSContact = ({ contact, index, onSendAlert, onCall }) => (
   
   <div className="flex items-center justify-between py-2">
     <div className="flex items-center">
@@ -13,6 +13,7 @@ const SOSContact = ({ contact, onSendAlert, onCall }) => (
         </svg>
       </div>
       <div>
+        <p>{index+1}</p>
         <p className="font-medium">{contact.name}</p>
         <p className="text-sm text-gray-500">{contact.number}</p>
       </div>
@@ -56,6 +57,9 @@ const SOSList = () => {
     });
 
     const handleSendAlert = async (contact, index) => {
+let username= localStorage.getItem("username")
+      console.log(username);
+      
       try {
         setSendingAlert(true);
         const response = await fetch('https://safe-haven-backend.vercel.app/incoming-messages', {
@@ -64,8 +68,8 @@ const SOSList = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            text: `${contact.name}, ${index + 1}`,
-            from: "+23480608637", // Ensure there's no space before the value
+            text: `${username}, ${index + 1}`,
+            from: "+2348060618637", // Ensure there's no space before the value
           }),
         });
         
@@ -132,10 +136,10 @@ const SOSList = () => {
           Recent
         </button>
         <button
-          onClick={() => setFilter('favorites')}
+          onClick={() => navigate('/consult')}
           className={`px-4 py-2 rounded-full ${filter === 'favorites' ? 'bg-custom-blue text-white' : 'bg-gray-100'}`}
         >
-          Favorites
+Hotlines
         </button>
       </div>
 
@@ -154,6 +158,7 @@ const SOSList = () => {
               <SOSContact
                 key={`${contact.name}-${contact.number}-${index}`}
                 contact={contact}
+                index={index}
                 onSendAlert={() => handleSendAlert(contact, index)}
                 onCall={() => handleCall(contact)}
               />
