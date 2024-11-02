@@ -171,3 +171,4 @@ const SOSList = () => {
     </div>
   );
 };
+export default SOSList;
